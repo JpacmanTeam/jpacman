@@ -1,4 +1,4 @@
-package nl.tudelft.jpacman.uat;
+package nl.tudelft.jpacman.SmokeTest;
 
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Anirut Chaogla
  */
-public class UAT03MovementTest {
+public class SmokeTest03Movement {
     private Launcher launcher;
     private Robot bot;
 
@@ -44,24 +44,27 @@ public class UAT03MovementTest {
         launcher.dispose();
     }
 
-    @ParameterizedTest(name = "TC{index} {0} ")
+    @ParameterizedTest(name = "TC{index} {3} ")
     @CsvSource({
-        "/testBoard/boardMoveUp.txt," + KeyEvent.VK_UP + ", 60",
-        "/testBoard/boardMoveDown.txt," + KeyEvent.VK_DOWN + ", 60",
-        "/testBoard/boardMoveLeft.txt," + KeyEvent.VK_LEFT + ", 100",
-        "/testBoard/boardMoveRight.txt," + KeyEvent.VK_RIGHT + ", 100"
+        "/testBoard/boardMoveUp.txt," + KeyEvent.VK_UP + ", 60" + ",Arrow Up pacman should go Up",
+        "/testBoard/boardMoveUp.txt," + KeyEvent.VK_W + ", 60" + ",Arrow W pacman should go Up",
+        "/testBoard/boardMoveDown.txt," + KeyEvent.VK_DOWN + ", 60" + ",Arrow Down pacman should go Down",
+        "/testBoard/boardMoveDown.txt," + KeyEvent.VK_S + ", 60" + ",Arrow S pacman should go Down",
+        "/testBoard/boardMoveLeft.txt," + KeyEvent.VK_LEFT + ", 100" + ",Arrow Left pacman should go Left",
+        "/testBoard/boardMoveLeft.txt," + KeyEvent.VK_A + ", 100" + ",Arrow A pacman should go Left",
+        "/testBoard/boardMoveRight.txt," + KeyEvent.VK_RIGHT + ", 100" + ",Arrow Right pacman should go Right",
+        "/testBoard/boardMoveRight.txt," + KeyEvent.VK_D + ", 100" + ",Arrow D pacman should go Right"
     })
-    void turnNorth(String source, int key, int expectedScore) throws InterruptedException, AWTException{
-        launcher
-            .withMapFile(source)
-            .launch();
+    void turnNorth(String source, int key, int expectedScore, String name)
+                                    throws InterruptedException{
+        launcher.withMapFile(source).launch();
         Game game = launcher.getGame();
         Player player = game.getPlayers().get(0);
+        long delayAfterPressKey = 900L;
 
         clickStartBtn();
-        enterKey(key);
+        enterKey(key,delayAfterPressKey);
 
-        Thread.sleep(5000);
         assertThat(player.getScore()).isEqualTo(expectedScore);
     }
 
@@ -71,8 +74,9 @@ public class UAT03MovementTest {
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
-    void enterKey(int key){
+    void enterKey(int key, long delay) throws InterruptedException{
         bot.keyPress(key);
         bot.keyRelease(key);
+        Thread.sleep(delay);
     }
 }
