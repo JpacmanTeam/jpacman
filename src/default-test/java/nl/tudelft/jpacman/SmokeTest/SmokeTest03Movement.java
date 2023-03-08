@@ -1,19 +1,16 @@
 package nl.tudelft.jpacman.SmokeTest;
 
 import nl.tudelft.jpacman.Launcher;
-import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.ByteArrayInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +41,17 @@ public class SmokeTest03Movement {
         launcher.dispose();
     }
 
+    /**
+     * Pacman should automatically move forward and
+     * can use key A, S, D, W and arrow keys
+     * to change Pacman direction
+     *
+     * @param source Path to map file (.txt)
+     * @param key {@link KeyEvent} to control Pacman
+     * @param expectedScore Expected player score
+     * @param name Name of test case
+     * @throws InterruptedException
+     */
     @ParameterizedTest(name = "TC{index} {3} ")
     @CsvSource({
         "/testBoard/boardMoveUp.txt," + KeyEvent.VK_UP + ", 60" + ",Arrow Up pacman should go Up",
@@ -55,7 +63,7 @@ public class SmokeTest03Movement {
         "/testBoard/boardMoveRight.txt," + KeyEvent.VK_RIGHT + ", 100" + ",Arrow Right pacman should go Right",
         "/testBoard/boardMoveRight.txt," + KeyEvent.VK_D + ", 100" + ",Arrow D pacman should go Right"
     })
-    void turnNorth(String source, int key, int expectedScore, String name)
+    void turnAround(String source, int key, int expectedScore, String name)
                                     throws InterruptedException{
         launcher.withMapFile(source).launch();
         Game game = launcher.getGame();
@@ -68,12 +76,22 @@ public class SmokeTest03Movement {
         assertThat(player.getScore()).isEqualTo(expectedScore);
     }
 
+    /**
+     * Move mouse to start btn then click
+     */
     void clickStartBtn(){
         bot.mouseMove(150,320);
         bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
+    /**
+     * Simulate pressing key on keyboard
+     *
+     * @param key {@link KeyEvent} to simulate
+     * @param delay delay after press key
+     * @throws InterruptedException
+     */
     void enterKey(int key, long delay) throws InterruptedException{
         bot.keyPress(key);
         bot.keyRelease(key);
