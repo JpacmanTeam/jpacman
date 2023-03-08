@@ -104,7 +104,7 @@ public class SmokeTest04PacmanSpeed {
     }
 
     /**
-     * Simulate pressing key on keyboard
+     * Simulate holding key on keyboard in <code>intervalTime/code>
      *
      * @param key {@link KeyEvent} to simulate
      * @throws InterruptedException
@@ -118,8 +118,9 @@ public class SmokeTest04PacmanSpeed {
     }
 
     /**
-     * Making <code>bot</code> press the key
-     * @param key
+     * Simulate pressing key on keyboard
+     *
+     * @param key {@link KeyEvent} to simulate
      * @throws InterruptedException
      */
     void enterKey(int key) throws InterruptedException{
