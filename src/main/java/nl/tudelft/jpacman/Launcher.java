@@ -40,6 +40,10 @@ public class Launcher {
     private PacManUI pacManUI;
     private Game game;
 
+    private final int DELAY_MS = 100; // milliseconds between each movement
+    private final Timer timer = new Timer(DELAY_MS, null); // create a timer with an empty ActionListener
+    private final ActionListener[] currentAction = {null}; // to keep track of the current ActionListener
+
     /**
      * @return The game object this launcher will start when {@link #launch()}
      *         is called.
@@ -153,87 +157,44 @@ public class Launcher {
     }
 
     /**
-     * Adds key events UP, DOWN, LEFT and RIGHT to a game.
+     * Adds key events UP, DOWN, LEFT, RIGHT, A, S, D and W to a game.
      *
      * @param builder
      *            The {@link PacManUiBuilder} that will provide the UI.
      */
     protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
-        final int DELAY_MS = 100; // milliseconds between each movement
-        final Timer timer = new Timer(DELAY_MS, null); // create a timer with an empty ActionListener
-        final ActionListener[] currentAction = {null}; // to keep track of the current ActionListener
-
-        builder.addKey(KeyEvent.VK_UP,
-            () -> {
-                // remove the previous ActionListener before adding a new one
-                timer.removeActionListener(currentAction[0]);
-                final ActionListener newAction = event -> {
-                    assert game != null;
-                    getGame().move(getGame().getPlayers().get(0), Direction.NORTH);
-                };
-                currentAction[0] = newAction;
-                timer.addActionListener(currentAction[0]);
-                timer.start();
-            },
-            () -> {
-                timer.stop();
-            });
-
-        builder.addKey(KeyEvent.VK_DOWN,
-            () -> {
-                // remove the previous ActionListener before adding a new one
-                timer.removeActionListener(currentAction[0]);
-                final ActionListener newAction = event -> {
-                    assert game != null;
-                    getGame().move(getGame().getPlayers().get(0), Direction.SOUTH);
-                };
-                currentAction[0] = newAction;
-                timer.addActionListener(currentAction[0]);
-                timer.start();
-            },
-            () -> {
-                timer.stop();
-            });
-
-        builder.addKey(KeyEvent.VK_LEFT,
-            () -> {
-                // remove the previous ActionListener before adding a new one
-                timer.removeActionListener(currentAction[0]);
-                final ActionListener newAction = event -> {
-                    assert game != null;
-                    getGame().move(getGame().getPlayers().get(0), Direction.WEST);
-                };
-                currentAction[0] = newAction;
-                timer.addActionListener(currentAction[0]);
-                timer.start();
-            },
-            () -> {
-                timer.stop();
-            });
-        builder.addKey(KeyEvent.VK_RIGHT,
-            () -> {
-                // remove the previous ActionListener before adding a new one
-                timer.removeActionListener(currentAction[0]);
-                final ActionListener newAction = event -> {
-                    assert game != null;
-                    getGame().move(getGame().getPlayers().get(0), Direction.EAST);
-                };
-                currentAction[0] = newAction;
-                timer.addActionListener(currentAction[0]);
-                timer.start();
-            },
-            () -> {
-                timer.stop();
-            });
+        final Action stopMoving = () -> { timer.stop(); };
+        builder .addKey(KeyEvent.VK_UP, continueMoveTowardsDirection(Direction.NORTH), stopMoving)
+                .addKey(KeyEvent.VK_DOWN, continueMoveTowardsDirection(Direction.SOUTH), stopMoving)
+                .addKey(KeyEvent.VK_LEFT, continueMoveTowardsDirection(Direction.WEST), stopMoving)
+                .addKey(KeyEvent.VK_RIGHT, continueMoveTowardsDirection(Direction.EAST), stopMoving)
+                .addKey(KeyEvent.VK_W, continueMoveTowardsDirection(Direction.NORTH), stopMoving)
+                .addKey(KeyEvent.VK_S, continueMoveTowardsDirection(Direction.SOUTH), stopMoving)
+                .addKey(KeyEvent.VK_A, continueMoveTowardsDirection(Direction.WEST), stopMoving)
+                .addKey(KeyEvent.VK_D, continueMoveTowardsDirection(Direction.EAST), stopMoving);
     }
 
 
-    private Action moveTowardsDirection(Direction direction) {
+    /**
+     * Return moving action when the key is pressed
+     *
+     * @param direction direction for moving
+     * @return {@link Action} to perform
+     */
+    private Action continueMoveTowardsDirection(Direction direction) {
         return () -> {
-            assert game != null;
-            getGame().move(getSinglePlayer(getGame()), direction);
+            // remove the previous ActionListener before adding a new one
+            timer.removeActionListener(currentAction[0]);
+            final ActionListener newAction = event -> {
+                assert game != null;
+                getGame().move(getGame().getPlayers().get(0), direction);
+            };
+            currentAction[0] = newAction;
+            timer.addActionListener(currentAction[0]);
+            timer.start();
         };
     }
+
 
     private Player getSinglePlayer(final Game game) {
         List<Player> players = game.getPlayers();

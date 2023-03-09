@@ -116,6 +116,26 @@ public class PacManUiBuilder {
     }
 
     /**
+     * Adds a key listener to the UI.
+     *
+     * @param keyCode
+     *            The key code of the key as used by {@link java.awt.event.KeyEvent}.
+     * @param startAction
+     *            The action to perform when the key is pressed.
+     * @param stopAction
+     *            The action to perform when the key is released.
+     * @return The builder.
+     */
+    public PacManUiBuilder addKey(Integer keyCode, Action startAction, Action stopAction) {
+        assert keyCode != null;
+        assert startAction != null;
+
+        keyMappings.put(keyCode, startAction);
+        keyMappings.put(keyCode+KeyEvent.KEY_RELEASED, stopAction);
+        return this;
+    }
+
+    /**
      * Adds a button to the UI.
      *
      * @param caption
