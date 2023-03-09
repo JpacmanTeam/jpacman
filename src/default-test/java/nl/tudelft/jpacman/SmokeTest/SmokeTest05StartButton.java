@@ -2,17 +2,20 @@ package nl.tudelft.jpacman.SmokeTest;
 
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.level.Level;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
+import org.mockito.Mock;
 
 import java.awt.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class SmokeTest05StartButton {
+
 
 
     private Launcher launcher;
@@ -29,6 +32,8 @@ public class SmokeTest05StartButton {
         bot = new Robot();
     }
 
+
+
     /**
      * Close the game
      */
@@ -36,23 +41,37 @@ public class SmokeTest05StartButton {
     void tearDown(){
         launcher.dispose();
     }
+    @Mock
+    private Level level;
+
+    @Mock
+    private Object progressLock;
+
+    private Game game;
 
 
-   /* @Test
-    public void testActionAfterGameFinish() {
-        // Create a mock game object
-        Game game = Mockito.mock(Game.class);
 
-        // Mock the game to finish playing
-        Mockito.doAnswer(invocation -> {
-            game.finish();
-            return null;
-        }).when(game).play();
+    @Test
+    public void testRestartGameAfterFinish() {
+        // Set up the level to return 0 pellets and no alive players
+        when(level.remainingPellets()).thenReturn(0);
+        when(level.isAnyPlayerAlive()).thenReturn(true);
 
-        // Call the method being tested after the game is finished
-        // In this example, the method is called "doSomethingAfterGameFinish"
-        game.play();
-        Mockito.verify(game).doSomethingAfterGameFinish();
-    } */
+        // Start the game
+        game.start();
+
+        // Verify that the game is no longer in progress
+        assertFalse(game.isInProgress());
+
+        // Restart the game
+        game.start();
+
+        // Verify that the level's addObserver() and start() methods are called
+        verify(level).addObserver(game);
+        verify(level).start();
+
+        // Verify that the game is now in progress
+        assertTrue(game.isInProgress());
+    }
 
 }
