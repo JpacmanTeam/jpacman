@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +21,8 @@ import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.Action;
 import nl.tudelft.jpacman.ui.PacManUI;
 import nl.tudelft.jpacman.ui.PacManUiBuilder;
+
+import javax.swing.Timer;
 
 /**
  * Creates and launches the JPacMan UI.
@@ -156,11 +159,74 @@ public class Launcher {
      *            The {@link PacManUiBuilder} that will provide the UI.
      */
     protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
-        builder.addKey(KeyEvent.VK_UP, moveTowardsDirection(Direction.NORTH))
-                .addKey(KeyEvent.VK_DOWN, moveTowardsDirection(Direction.SOUTH))
-                .addKey(KeyEvent.VK_LEFT, moveTowardsDirection(Direction.WEST))
-                .addKey(KeyEvent.VK_RIGHT, moveTowardsDirection(Direction.EAST));
+        final int DELAY_MS = 100; // milliseconds between each movement
+        final Timer timer = new Timer(DELAY_MS, null); // create a timer with an empty ActionListener
+        final ActionListener[] currentAction = {null}; // to keep track of the current ActionListener
+
+        builder.addKey(KeyEvent.VK_UP,
+            () -> {
+                // remove the previous ActionListener before adding a new one
+                timer.removeActionListener(currentAction[0]);
+                final ActionListener newAction = event -> {
+                    assert game != null;
+                    getGame().move(getGame().getPlayers().get(0), Direction.NORTH);
+                };
+                currentAction[0] = newAction;
+                timer.addActionListener(currentAction[0]);
+                timer.start();
+            },
+            () -> {
+                timer.stop();
+            });
+
+        builder.addKey(KeyEvent.VK_DOWN,
+            () -> {
+                // remove the previous ActionListener before adding a new one
+                timer.removeActionListener(currentAction[0]);
+                final ActionListener newAction = event -> {
+                    assert game != null;
+                    getGame().move(getGame().getPlayers().get(0), Direction.SOUTH);
+                };
+                currentAction[0] = newAction;
+                timer.addActionListener(currentAction[0]);
+                timer.start();
+            },
+            () -> {
+                timer.stop();
+            });
+
+        builder.addKey(KeyEvent.VK_LEFT,
+            () -> {
+                // remove the previous ActionListener before adding a new one
+                timer.removeActionListener(currentAction[0]);
+                final ActionListener newAction = event -> {
+                    assert game != null;
+                    getGame().move(getGame().getPlayers().get(0), Direction.WEST);
+                };
+                currentAction[0] = newAction;
+                timer.addActionListener(currentAction[0]);
+                timer.start();
+            },
+            () -> {
+                timer.stop();
+            });
+        builder.addKey(KeyEvent.VK_RIGHT,
+            () -> {
+                // remove the previous ActionListener before adding a new one
+                timer.removeActionListener(currentAction[0]);
+                final ActionListener newAction = event -> {
+                    assert game != null;
+                    getGame().move(getGame().getPlayers().get(0), Direction.EAST);
+                };
+                currentAction[0] = newAction;
+                timer.addActionListener(currentAction[0]);
+                timer.start();
+            },
+            () -> {
+                timer.stop();
+            });
     }
+
 
     private Action moveTowardsDirection(Direction direction) {
         return () -> {
