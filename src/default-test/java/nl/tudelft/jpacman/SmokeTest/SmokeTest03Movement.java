@@ -68,7 +68,7 @@ public class SmokeTest03Movement {
         launcher.withMapFile(source).launch();
         Game game = launcher.getGame();
         Player player = game.getPlayers().get(0);
-        long delayAfterPressKey = 900L;
+        long delayAfterPressKey = 1_500L;
 
         clickStartBtn();
         enterKey(key,delayAfterPressKey);
