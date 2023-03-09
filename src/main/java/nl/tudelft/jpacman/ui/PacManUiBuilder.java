@@ -106,11 +106,12 @@ public class PacManUiBuilder {
      *            The action to perform when the key is pressed.
      * @return The builder.
      */
-    public PacManUiBuilder addKey(Integer keyCode, Action action) {
+    public PacManUiBuilder addKey(Integer keyCode, Action action, Action stopAction) {
         assert keyCode != null;
         assert action != null;
 
         keyMappings.put(keyCode, action);
+        keyMappings.put(keyCode + KeyEvent.KEY_RELEASED, stopAction);
         return this;
     }
 
