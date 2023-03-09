@@ -291,6 +291,7 @@ public class Level {
         return false;
     }
 
+
     /**
      * Counts the pellets remaining on the board.
      *
@@ -369,6 +370,7 @@ public class Level {
         /**
          * The level has been lost. Typically the level should be stopped when
          * this event is received.
+         * @return
          */
         void levelLost();
     }
