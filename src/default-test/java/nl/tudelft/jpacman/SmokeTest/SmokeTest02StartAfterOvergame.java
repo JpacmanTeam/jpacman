@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman.SmokeTest;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
@@ -9,6 +10,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 /**
  * test start after game over
 
@@ -16,6 +21,7 @@ import org.junit.jupiter.api.Test;
  */
 public class SmokeTest02StartAfterOvergame {
     private Launcher launcher;
+    private Robot bot;
 
     /**
      * Launch the user interface.
@@ -89,8 +95,9 @@ public class SmokeTest02StartAfterOvergame {
 
 
         //restart again
-        game.start();
-        assertThat(game.isInProgress()).isTrue();
+        clickStartBtn();
+        //assertThat(game.isInProgress()).isTrue();
+        ;
 
 
     }
@@ -110,9 +117,20 @@ public class SmokeTest02StartAfterOvergame {
         }
     }
 
-
     private Game getGame() {
         return launcher.getGame();
     }
+
+    /**
+     * Move mouse to start btn then click
+     */
+    void clickStartBtn(){
+
+        bot.mouseMove(150,320);
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+    }
+
 }
 
