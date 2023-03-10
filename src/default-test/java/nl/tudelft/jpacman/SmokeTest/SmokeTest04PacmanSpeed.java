@@ -31,15 +31,15 @@ public class SmokeTest04PacmanSpeed {
     /**
      * Period of eating pellets
      */
-    private long intervalTime = 500;
+    private long intervalTime = 3000;
     /**
      * Total score that Pacman do in <code>IntervalTime</code>
      */
-    private int scoreInIntervalTime = 50;
+    private int scoreInIntervalTime = 260;
     /**
      * Error of score in one period of time
      */
-    private int scoreEpsilon = 30;
+    private int scoreEpsilon = 0;
 
     /**
      * Open the game
