@@ -15,8 +15,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class SmokeTest05StartButton {
@@ -51,22 +50,36 @@ public class SmokeTest05StartButton {
         assertThat(getGame().isInProgress()).isTrue();
     }
 
+    private Game getGame() {
+        return launcher.getGame();
+    }
+
+    void clickStartBtn() {
+        bot.mouseMove(150, 320);
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
     @Test
-    public void  TestNoPelletLeft(){
-
+    public void testAllPelletsCollected() {
+        Launcher launcher = new Launcher();
+        launcher.withMapFile("/board.txt");
+        Game game = launcher.makeGame();
         launcher.launch();
-        getGame().start();
         assertThat(getGame().isInProgress()).isTrue();
-        Level level = game.getLevel();
-        level.registerPlayer(player);
 
-        // Collect all pellets in the level
-        while (level.remainingPellets() > 0) {
-            game.move(player, Direction.EAST);
-            game.move(player, Direction.NORTH);
-            game.move(player, Direction.WEST);
-            game.move(player, Direction.SOUTH);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        Player player = game.getPlayers().get(0);
+        while (game.isInProgress() && level.remainingPellets() > 0) {
+            player.setDirection(Direction.values()[(int) (Math.random() * Direction.values().length)]);
+            game.move(player, player.getDirection());
+        }
+
         // No pellets left = Finnish
         assertThat(level.remainingPellets()).isZero();
 
@@ -76,17 +89,8 @@ public class SmokeTest05StartButton {
 
         //Restart to play again
         clickStartBtn();
+        assertThat(getGame().isInProgress()).isTrue();
 
-        }
-
-    private Game getGame() {
-        return launcher.getGame();
-    }
-
-    void clickStartBtn() {
-        bot.mouseMove(150, 320);
-        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
 
