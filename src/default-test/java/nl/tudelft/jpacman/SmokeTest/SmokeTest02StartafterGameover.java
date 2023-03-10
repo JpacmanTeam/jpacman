@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 /**
  *Test Start after Game over
 
- 
+
  * @author  Netchanok Muaengkhot
  */
 public class SmokeTest02StartafterGameover {
@@ -107,7 +107,7 @@ public class SmokeTest02StartafterGameover {
         Thread.sleep(1000L);
         clickStartBtn();
         Thread.sleep(500L);
-
+        assertThat(getGame().isInProgress()).isTrue();
 
     }
 
