@@ -83,7 +83,7 @@ public class Launcher {
     }
 
     /**
-     * Creates a new level. By default this method will use the map parser to
+     * Creates a new level. By default, this method will use the map parser to
      * parse the default board stored in the <code>board.txt</code> resource.
      *
      * @return A new level.
