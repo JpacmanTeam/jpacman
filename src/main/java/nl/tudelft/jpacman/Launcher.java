@@ -90,7 +90,7 @@ public class Launcher {
     }
 
     /**
-     * Creates a new level. By default this method will use the map parser to
+     * Creates a new level. By default, this method will use the map parser to
      * parse the default board stored in the <code>board.txt</code> resource.
      *
      * @return A new level.
@@ -209,7 +209,7 @@ public class Launcher {
      */
     public void launch() {
         makeGame();
-        PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
+        PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons().addButton("Restart",restart());
         addSinglePlayerKeys(builder);
         pacManUI = builder.build(getGame());
         pacManUI.start();
@@ -224,6 +224,22 @@ public class Launcher {
     public void dispose() {
         assert pacManUI != null;
         pacManUI.dispose();
+    }
+    /**
+     * Restart the game by dispose old game frame and launch new game frame instead
+     * @return Action, pack of function that dispose and launch
+     */
+    public Action restart(){
+        return ()->{
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.LOST){
+                dispose();
+                launch();
+            }
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.WIN){
+                dispose();
+                withMapFile("/board.txt").launch();
+            }
+        };
     }
 
     /**

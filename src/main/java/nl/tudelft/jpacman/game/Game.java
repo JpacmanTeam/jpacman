@@ -1,12 +1,21 @@
 package nl.tudelft.jpacman.game;
 
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.List;
 
+import nl.tudelft.jpacman.Launcher;
+import nl.tudelft.jpacman.PacmanConfigurationException;
+import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
-import nl.tudelft.jpacman.level.Level;
+import nl.tudelft.jpacman.level.*;
 import nl.tudelft.jpacman.level.Level.LevelObserver;
-import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.points.PointCalculatorLoader;
+import nl.tudelft.jpacman.sprite.PacManSprites;
+import nl.tudelft.jpacman.ui.Action;
+import nl.tudelft.jpacman.ui.PacManUiBuilder;
 
 /**
  * A basic implementation of a Pac-Man game.
@@ -44,6 +53,8 @@ public abstract class Game implements LevelObserver {
 
     /**
      * Starts or resumes the game.
+     *
+     * Recreate map if player's not alive.
      */
     public void start() {
         synchronized (progressLock) {
@@ -104,13 +115,45 @@ public abstract class Game implements LevelObserver {
         }
     }
 
+    /**
+     * Store player's status
+     */
+    public static enum PLAYER_STATUS{
+        WIN,
+        LOST,
+        PLAYING
+    }
+
+    /**
+     * Default player's status to playing.
+     */
+    private PLAYER_STATUS playerStatus = PLAYER_STATUS.PLAYING;
+
+    /**
+     * @return The current player's status.
+     * @return
+     */
+    public PLAYER_STATUS getPlayerStatus(){
+        return playerStatus;
+    }
+
+    /**
+     * Set player's status.
+     * @param ps
+     *          Status the player is currently in.
+     */
+    public void setPlayerStatus(PLAYER_STATUS ps){
+        playerStatus = ps;
+    }
     @Override
     public void levelWon() {
+        setPlayerStatus(PLAYER_STATUS.WIN);
         stop();
     }
 
     @Override
     public void levelLost() {
+        setPlayerStatus(PLAYER_STATUS.LOST);
         stop();
     }
 }
