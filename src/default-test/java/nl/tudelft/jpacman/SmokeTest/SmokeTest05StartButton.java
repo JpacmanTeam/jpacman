@@ -3,6 +3,7 @@ package nl.tudelft.jpacman.SmokeTest;
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -25,14 +26,14 @@ public class SmokeTest05StartButton {
     private Level level;
     private Robot bot;
     private Player player;
+    private GameFactory gameFactory;
     /**
      * Start a launcher, which can display the user interface.
      */
     @BeforeEach
-    public void before() {
+    void setUp() throws AWTException{
         launcher = new Launcher();
-
-
+        bot = new Robot();
     }
     /**
      * Close the user interface.
@@ -53,7 +54,9 @@ public class SmokeTest05StartButton {
     @Test
     public void  TestNoPelletLeft(){
 
-        game.start();
+        launcher.launch();
+        getGame().start();
+        assertThat(getGame().isInProgress()).isTrue();
         Level level = game.getLevel();
         level.registerPlayer(player);
 
@@ -85,6 +88,9 @@ public class SmokeTest05StartButton {
         bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
+
+
+
 
 }
 
