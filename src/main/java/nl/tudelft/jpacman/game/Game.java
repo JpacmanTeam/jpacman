@@ -66,125 +66,8 @@ public abstract class Game implements LevelObserver {
                 getLevel().addObserver(this);
                 getLevel().start();
             }
-            if (!getLevel().isAnyPlayerAlive()) {
-                inProgress = false;
-                makeGame();
-                PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
-                addSinglePlayerKeys(builder);
-
-            }
         }
     }
-
-    /**
-     * Adds key events UP, DOWN, LEFT and RIGHT to a game.
-     *
-     * @param builder
-     *            The {@link PacManUiBuilder} that will provide the UI.
-     */
-    protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
-        builder.addKey(KeyEvent.VK_UP, moveTowardsDirection(Direction.NORTH))
-            .addKey(KeyEvent.VK_DOWN, moveTowardsDirection(Direction.SOUTH))
-            .addKey(KeyEvent.VK_LEFT, moveTowardsDirection(Direction.WEST))
-            .addKey(KeyEvent.VK_RIGHT, moveTowardsDirection(Direction.EAST));
-    }
-
-    private Action moveTowardsDirection(Direction direction) {
-        return () -> {
-            assert game != null;
-            getGame().move(getSinglePlayer(getGame()), direction);
-        };
-    }
-    
-    /**
-     * Create new game
-     */
-    public Game makeGame(){
-        GameFactory gf = getGameFactory();
-        Level level = makeLevel();
-        gf.createSinglePlayerGame(level, loadPointCalculator());
-    }
-
-    private PointCalculator loadPointCalculator() {
-        return new PointCalculatorLoader().load();
-    }
-
-    /**
-     * Creates a new level. By default, this method will use the map parser to
-     * parse the default board stored in the <code>board.txt</code> resource.
-     *
-     * @return A new level.
-     */
-    public Level makeLevel() {
-        try {
-            return getMapParser().parseMap(getLevelMap());
-        } catch (IOException e) {
-            throw new PacmanConfigurationException(
-                "Unable to create level, name = " + getLevelMap(), e);
-        }
-    }
-
-    /**
-     * The map file used to populate the level.
-     *
-     * @return The name of the map file.
-     */
-    protected String getLevelMap() {
-        return "/board.txt";
-    }
-
-    /**
-     * @return A new map parser object using the factories from
-     *         {@link #getLevelFactory()} and {@link #getBoardFactory()}.
-     */
-    protected MapParser getMapParser() {
-        return new MapParser(getLevelFactory(), getBoardFactory());
-    }
-
-    /**
-     * @return A new board factory using the sprite store from
-     *         {@link #getSpriteStore()}.
-     */
-    protected BoardFactory getBoardFactory() {
-        return new BoardFactory(getSpriteStore());
-    }
-
-    /**
-     * @return The default {@link PacManSprites}.
-     */
-    protected PacManSprites getSpriteStore() {
-        return SPRITE_STORE;
-    }
-
-    /**
-     * @return A new factory using the sprites from {@link #getSpriteStore()}
-     *         and the ghosts from {@link #getGhostFactory()}.
-     */
-    protected LevelFactory getLevelFactory() {
-        return new LevelFactory(getSpriteStore(), getGhostFactory(), loadPointCalculator());
-    }
-
-    /**
-     * @return A new factory using the sprites from {@link #getSpriteStore()}.
-     */
-    protected GhostFactory getGhostFactory() {
-        return new GhostFactory(getSpriteStore());
-    }
-
-    /**
-     * @return A new factory using the players from {@link #getPlayerFactory()}.
-     */
-    protected GameFactory getGameFactory() {
-        return new GameFactory(getPlayerFactory());
-    }
-
-    /**
-     * @return A new factory using the sprites from {@link #getSpriteStore()}.
-     */
-    protected PlayerFactory getPlayerFactory() {
-        return new PlayerFactory(getSpriteStore());
-    }
-
 
     /**
      * Pauses the game.
@@ -232,13 +115,28 @@ public abstract class Game implements LevelObserver {
         }
     }
 
+    public static enum PLAYER_STATUS{
+        WIN,
+        LOST,
+        PLAYING
+    }
+
+    private PLAYER_STATUS playerStatus = PLAYER_STATUS.PLAYING;
+    public PLAYER_STATUS getPlayerStatus(){
+        return playerStatus;
+    }
+    public void setPlayerStatus(PLAYER_STATUS ps){
+        playerStatus = ps;
+    }
     @Override
     public void levelWon() {
+        setPlayerStatus(PLAYER_STATUS.WIN);
         stop();
     }
 
     @Override
     public void levelLost() {
+        setPlayerStatus(PLAYER_STATUS.LOST);
         stop();
     }
 }
