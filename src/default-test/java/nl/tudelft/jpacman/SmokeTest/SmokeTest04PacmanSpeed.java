@@ -31,15 +31,15 @@ public class SmokeTest04PacmanSpeed {
     /**
      * Period of eating pellets
      */
-    private long intervalTime = 500;
+    private long intervalTime = 3000;
     /**
      * Total score that Pacman do in <code>IntervalTime</code>
      */
-    private int scoreInIntervalTime = 50;
+    private int scoreInIntervalTime = 260;
     /**
      * Error of score in one period of time
      */
-    private int scoreEpsilon = 30;
+    private int scoreEpsilon = 0;
 
     /**
      * Open the game
@@ -98,7 +98,7 @@ public class SmokeTest04PacmanSpeed {
      * Move mouse to start btn then click
      */
     void clickStartBtn(){
-        bot.mouseMove(   600,120);
+        bot.mouseMove(   700,125);
         bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }

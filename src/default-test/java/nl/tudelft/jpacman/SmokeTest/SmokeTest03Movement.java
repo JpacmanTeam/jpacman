@@ -80,7 +80,7 @@ public class SmokeTest03Movement {
      * Move mouse to start btn then click
      */
     void clickStartBtn(){
-        bot.mouseMove(150,320);
+        bot.mouseMove(130,320);
         bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
