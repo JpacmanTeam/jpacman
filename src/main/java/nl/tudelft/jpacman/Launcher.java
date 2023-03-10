@@ -203,10 +203,16 @@ public class Launcher {
      * @return Action, pack of function that dispose and launch
      */
     public Action restart(){
-            return () -> {
+        return ()->{
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.LOST){
                 dispose();
                 launch();
-            };
+            }
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.WIN){
+                dispose();
+                withMapFile("/board.txt").launch();
+            }
+        };
     }
 
     /**
