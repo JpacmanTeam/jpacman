@@ -1,46 +1,53 @@
 package nl.tudelft.jpacman.SmokeTest;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+
 
 /**
- * test start after game over
+ *Test Start after Game over
 
- * @author Netchanok Muaengkhot
+ *
+ * @author  Netchanok Muaengkhot
  */
-public class SmokeTest02StartAfterOvergame {
+public class SmokeTest02StartafterGameover {
+    /**
+     * The game launcher for init the game
+     */
     private Launcher launcher;
+    /**
+     * The robot for making mouse and press event
+     */
     private Robot bot;
 
+
+
+
     /**
-     * Launch the user interface.
+     * Open the game
+     * @throws AWTException
      */
     @BeforeEach
-    void setUpPacman() {
+    void setUp() throws AWTException{
         launcher = new Launcher();
-        launcher.launch();
+        bot = new Robot();
     }
 
     /**
-     * Quit the user interface when we're done.
+     * Close the game
      */
     @AfterEach
-    void tearDown() {
+    void tearDown(){
         launcher.dispose();
     }
-
-
     @Test
     public void gameIsOpenning() {
         launcher.launch();
@@ -49,10 +56,15 @@ public class SmokeTest02StartAfterOvergame {
 
         assertThat(getGame().isInProgress()).isTrue();
     }
+
     @Test
-    void startAfterOvergame() throws InterruptedException {
+    void startAfterGameover()
+        throws InterruptedException{
+        launcher.withMapFile("/testBoard/board2.txt").launch();
         Game game = launcher.getGame();
         Player player = game.getPlayers().get(0);
+
+
 
         //simulate playing game
         // start
@@ -82,9 +94,6 @@ public class SmokeTest02StartAfterOvergame {
         assertThat(player.getScore()).isEqualTo(120);
 
         move(game, Direction.NORTH, 2);
-
-        // Sleeping in tests is generally a bad idea.
-        // Here we do it just to let the monsters move.
         Thread.sleep(500L);
         // close to monsters, this will get us killed.
         move(game, Direction.WEST, 10);
@@ -93,22 +102,36 @@ public class SmokeTest02StartAfterOvergame {
         game.stop();
         assertThat(game.isInProgress()).isFalse();
 
-
-        //restart again
+        //Restart Game
+        clickRestartBtn();
+        Thread.sleep(1000L);
         clickStartBtn();
-        //assertThat(game.isInProgress()).isTrue();
-        ;
+        Thread.sleep(500L);
 
 
     }
 
+
     /**
-     * Make number of moves in given direction.
-     *
-     * @param game The game we're playing
-     * @param dir The direction to be taken
-     * @param numSteps The number of steps to take
+     * Move mouse to start btn then click
      */
+    void clickStartBtn(){
+        bot.mouseMove(   135,410);
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
+    void clickRestartBtn(){
+        bot.mouseMove(   230,410);
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
+
+
+    private Game getGame() {
+        return launcher.getGame();
+    }
 
     public static void move(Game game, Direction dir, int numSteps) {
         Player player = game.getPlayers().get(0);
@@ -116,21 +139,5 @@ public class SmokeTest02StartAfterOvergame {
             game.move(player, dir);
         }
     }
-
-    private Game getGame() {
-        return launcher.getGame();
-    }
-
-    /**
-     * Move mouse to start btn then click
-     */
-    void clickStartBtn(){
-
-        bot.mouseMove(150,320);
-        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-
-    }
-
 }
 
