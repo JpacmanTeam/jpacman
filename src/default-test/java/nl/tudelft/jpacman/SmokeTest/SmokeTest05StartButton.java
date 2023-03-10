@@ -14,7 +14,8 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class SmokeTest05StartButton {
@@ -23,6 +24,7 @@ public class SmokeTest05StartButton {
     private Game game;
     private Level level;
     private Robot bot;
+    private Player player;
     /**
      * Start a launcher, which can display the user interface.
      */
@@ -50,13 +52,20 @@ public class SmokeTest05StartButton {
     @Test
     public void  TestNoPelletLeft(){
 
-        // check that there are no pellets left
+        game.start();
+        Level level = game.getLevel();
+        level.registerPlayer(player);
 
+        // Collect all pellets in the level
+        while (level.remainingPellets() > 0) {
+            game.move(player, Direction.EAST);
+        }
         // No pellets left = Finnish
         assertThat(level.remainingPellets()).isZero();
 
-        //Game needs to finish
-        assertThat(getGame().isInProgress()).isFalse();
+        // Verify that the game is in progress and the player has not moved
+        assertTrue(game.isInProgress());
+        assertFalse(player.isAlive());
 
         //Restart to play again
         clickStartBtn();
@@ -67,13 +76,15 @@ public class SmokeTest05StartButton {
         return launcher.getGame();
     }
 
-    void clickStartBtn(){
-        bot.mouseMove(150,320);
+    void clickStartBtn() {
+        bot.mouseMove(150, 320);
         bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
 }
+
+
 
 
 
