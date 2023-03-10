@@ -32,6 +32,7 @@ public class SmokeTest05StartButton {
     public void before() {
         launcher = new Launcher();
 
+
     }
     /**
      * Close the user interface.
@@ -59,6 +60,9 @@ public class SmokeTest05StartButton {
         // Collect all pellets in the level
         while (level.remainingPellets() > 0) {
             game.move(player, Direction.EAST);
+            game.move(player, Direction.NORTH);
+            game.move(player, Direction.WEST);
+            game.move(player, Direction.SOUTH);
         }
         // No pellets left = Finnish
         assertThat(level.remainingPellets()).isZero();
