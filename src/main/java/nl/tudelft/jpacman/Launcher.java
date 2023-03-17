@@ -4,8 +4,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
-import nl.tudelft.jpacman.board.BoardFactory;
-import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.*;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.level.Level;
@@ -186,6 +185,9 @@ public class Launcher {
         addSinglePlayerKeys(builder);
         pacManUI = builder.build(getGame());
         pacManUI.start();
+        //new Start(); Run start page
+        //new WinPage(); Run Wining page
+        //new LosePage(); Run Losing Page
     }
 
     /**
@@ -197,6 +199,7 @@ public class Launcher {
     public void dispose() {
         assert pacManUI != null;
         pacManUI.dispose();
+
     }
 
     /**
