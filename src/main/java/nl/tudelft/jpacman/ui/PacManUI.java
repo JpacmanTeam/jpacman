@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import nl.tudelft.jpacman.board.Start;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
 
@@ -29,6 +30,8 @@ import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
  *
  */
 public class PacManUI extends JFrame {
+
+
 
     /**
      * Default serialisation UID.
