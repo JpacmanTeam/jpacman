@@ -6,6 +6,7 @@ import java.util.List;
 
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.Start;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.level.Level;
@@ -182,10 +183,11 @@ public class Launcher {
      */
     public void launch() {
         makeGame();
-        PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
+        PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons().addButton("Home",home());
         addSinglePlayerKeys(builder);
         pacManUI = builder.build(getGame());
         pacManUI.start();
+
     }
 
     /**
@@ -197,6 +199,15 @@ public class Launcher {
     public void dispose() {
         assert pacManUI != null;
         pacManUI.dispose();
+    }
+    public Action home(){
+
+        return ()->{
+            dispose();
+            Start s1 = new Start();
+            s1.show();
+
+        };
     }
 
     /**

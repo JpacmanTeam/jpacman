@@ -2,13 +2,12 @@ package nl.tudelft.jpacman.sprite;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 /**
  * Utility to load {@link Sprite}s.
