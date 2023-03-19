@@ -1,56 +1,90 @@
 package nl.tudelft.jpacman.ui;
 
+import nl.tudelft.jpacman.pageUtil.ButtonOnPage;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * A panel defined by a lost page of game includes buttons.
+ */
 public class WinPanel extends JPanel {
-    private int boardWidth = 380;
-    private int boardHeight = 420;
-    private Image backgroundImage;
 
-     public WinPanel() {
+    /**
+     * static source of background
+     */
+    private final String BACKGROUND_SOURCE = "src/main/resources/component/winBackground.png";
 
-         setLayout(null);
-         backgroundImage = new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\win.png").getImage();
-         JButton nextButton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\next.png"));
-         nextButton.setBounds(130,200,100, 40);
-         nextButton.addActionListener(new ActionListener() {
-             //Override
-             public void actionPerformed(ActionEvent e) {
+    /**
+     * static source of retry button
+     */
+    private final String RETRY_BUTTON_SOURCE = "src/main/resources/component/retryButton.png";
+    /**
+     * static source of next button
+     */
+    private final String NEXT_BUTTON_SOURCE = "src/main/resources/component/nextButton.png";
 
-             }
-         });
-         add(nextButton);
+    /**
+     * static source of home button
+     */
+    private final String HOME_BUTTON_SOURCE = "src/main/resources/component/homeButton.png";
 
-         JButton ReplayButton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\replay.png"));
-         ReplayButton.setBounds(130,250,100, 40);
-         ReplayButton.addActionListener(new ActionListener() {
-             //Override
-             public void actionPerformed(ActionEvent e) {
+    /**
+     * width of page
+     */
+    private final int pageWidth = 368;
 
-             }
-         });
-         add(ReplayButton);
+    /**
+     * height of page
+     */
+    private final int pageHeight = 420;
 
-         JButton Homebutton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\home.png"));
-         Homebutton.setBounds(130,300,100, 40);
-         Homebutton.addActionListener(new ActionListener() {
-             //Override
-             public void actionPerformed(ActionEvent e) {
+    /**
+     * background image object
+     * */
+    private final Image background;
 
-             }
-         });
-         add(Homebutton);
-     }
+    /**
+     * retry button object
+     * */
+    private final ButtonOnPage retryButton;
+    /**
+     * next button object
+     * */
+    private final ButtonOnPage nextButton;
+    /**
+     * home button object
+     * */
+    private final ButtonOnPage homeButton;
+
+    /**
+     * Create lose panel and add the buttons
+     * */
+    public WinPanel(){
+        setLayout(null);
+
+        //define background image by source
+        background = new ImageIcon(BACKGROUND_SOURCE).getImage();
+
+        //define retry button by image source and size
+        retryButton = new ButtonOnPage(new ImageIcon(RETRY_BUTTON_SOURCE),new Rectangle(130,200,100,40));
+        //define next button by image source and size
+        nextButton = new ButtonOnPage(new ImageIcon(NEXT_BUTTON_SOURCE),new Rectangle(130,250,100,40));
+        //define home button by image source and size
+        homeButton = new ButtonOnPage(new ImageIcon(HOME_BUTTON_SOURCE),new Rectangle(130,300,100,40));
+
+        add(retryButton);
+        add(nextButton);
+        add(homeButton);
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(boardWidth, boardHeight);
+        return new Dimension(pageWidth, pageHeight);
     }
 }
+

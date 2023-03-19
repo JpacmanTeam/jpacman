@@ -185,9 +185,6 @@ public class Launcher {
         addSinglePlayerKeys(builder);
         pacManUI = builder.build(getGame());
         pacManUI.start();
-        //new Start(); Run start page
-        //new WinPage(); Run Wining page
-        //new LosePage(); Run Losing Page
     }
 
     /**
@@ -200,6 +197,23 @@ public class Launcher {
         assert pacManUI != null;
         pacManUI.dispose();
 
+    }
+
+    /**
+     * Restart the game by dispose old game frame and launch new game frame instead
+     * @return Action, pack of function that dispose and launch
+     */
+    public Action restart(){
+        return ()->{
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.LOST){
+                dispose();
+                launch();
+            }
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.WIN){
+                dispose();
+                withMapFile("/board.txt").launch();
+            }
+        };
     }
 
     /**

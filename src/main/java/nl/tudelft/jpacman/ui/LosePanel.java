@@ -1,47 +1,79 @@
 package nl.tudelft.jpacman.ui;
 
+import nl.tudelft.jpacman.pageUtil.ButtonOnPage;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * A panel defined by a lost page of game includes buttons.
+ */
 public class LosePanel extends JPanel {
-    private int boardWidth = 380;
-    private int boardHeight = 420;
-    private Image backgroundImage;
 
+    /**
+     * static source of background
+     */
+    private final String BACKGROUND_SOURCE = "src/main/resources/component/loseBackground.png";
+
+    /**
+     * static source of retry button
+     */
+    private final String RETRY_BUTTON_SOURCE = "src/main/resources/component/retryButton.png";
+
+    /**
+     * static source of home button
+     */
+    private final String HOME_BUTTON_SOURCE = "src/main/resources/component/homeButton.png";
+
+    /**
+     * width of page
+     */
+    private final int pageWidth = 368;
+
+    /**
+     * height of page
+     */
+    private final int pageHeight = 420;
+
+    /**
+     * background image object
+     * */
+    private final Image background;
+
+    /**
+     * retry button object
+     * */
+    private final ButtonOnPage retryButton;
+    /**
+     * home button object
+     * */
+    private final ButtonOnPage homeButton;
+
+    /**
+     * Create lose panel and add the buttons
+     * */
     public LosePanel(){
         setLayout(null);
-        backgroundImage = new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\lose.png").getImage();
 
-        JButton ReplayButton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\replay.png"));
-        ReplayButton.setBounds(130,200,100, 40);
-        ReplayButton.addActionListener(new ActionListener() {
-            //Override
-            public void actionPerformed(ActionEvent e) {
+        //define background image by source
+        background = new ImageIcon(BACKGROUND_SOURCE).getImage();
 
-            }
-        });
-        add(ReplayButton);
+        //define retry button by image source and size
+        retryButton = new ButtonOnPage(new ImageIcon(RETRY_BUTTON_SOURCE),new Rectangle(130,200,100,40));
+        //define home button by image source and size
+        homeButton = new ButtonOnPage(new ImageIcon(HOME_BUTTON_SOURCE),new Rectangle(130,300,100,40));
 
-        JButton Homebutton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\home.png"));
-        Homebutton.setBounds(130,250,100, 40);
-        Homebutton.addActionListener(new ActionListener() {
-            //Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        add(Homebutton);
+        add(retryButton);
+        add(homeButton);
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(boardWidth, boardHeight);
+        return new Dimension(pageWidth, pageHeight);
     }
 }
 

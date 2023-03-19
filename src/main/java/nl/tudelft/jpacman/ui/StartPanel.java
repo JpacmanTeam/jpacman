@@ -1,76 +1,71 @@
 package nl.tudelft.jpacman.ui;
 
-
-
-import nl.tudelft.jpacman.Launcher;
-import nl.tudelft.jpacman.board.Start;
-import nl.tudelft.jpacman.ui.PacManUI;
-import nl.tudelft.jpacman.ui.PacManUiBuilder;
+import nl.tudelft.jpacman.pageUtil.ButtonOnPage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.event.*;
 
-
+/**
+ * A panel defined by a home page of game includes buttons.
+ */
 public class StartPanel extends JPanel {
 
-    private int boardWidth = 380;
-    private int boardHeight = 420;
-    private Image backgroundImage;
-    private PacManUI pacManUI;
+    /**
+     * static source of background
+     */
+    private final String BACKGROUND_SOURCE = "src/main/resources/component/homeBackground.png";
 
+    /**
+     * static source of start button
+     */
+    private final String START_BUTTON_SOURCE = "src/main/resources/component/startButton.png";
 
+    /**
+     * width of page
+     */
+    private final int pageWidth = 368;
+
+    /**
+     * height of page
+     */
+    private final int pageHeight = 420;
+
+    /**
+     * background image object
+     * */
+    private final Image background;
+
+    /**
+     * start button object
+     * */
+    private final ButtonOnPage startButton;
+
+    /**
+     * Create start panel and add the buttons
+     * */
     public StartPanel() {
         setLayout(null);
 
-        backgroundImage = new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\back.png").getImage();
-        JButton startButton = new JButton(new ImageIcon("src\\main\\java\\nl\\tudelft\\jpacman\\sprite\\stbut.png"));
-        startButton.setBounds(130,200,100, 40);
-        startButton.addActionListener(new ActionListener() {
+        //define background image by source
+        background = new ImageIcon(BACKGROUND_SOURCE).getImage();
 
-                //Override
-                public void actionPerformed(ActionEvent e) {
-/*
-                    // Create a new Launcher object
-                    Launcher launcher = new Launcher();
-
-                    // Create a new game instance
-                    launcher.makeGame();
-
-                    // Create a new PacManUI object
-                    PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
-                    PacManUI pacManUI = builder.build(launcher.getGame());
-                    // Remove the home page components
-
-                    // Add any other components to be removed
-
-                    // Resize the window to fit the Pacman game
-                    setSize(pacManUI.getSize());
-
-                    // Repaint the window
-                    revalidate();
-                    repaint();
-
-                    // Display the Pac-Man game UI
-                    pacManUI.start();
-
-*/
-                }
-        });
+        //define start button by image source and size
+        startButton = new ButtonOnPage(new ImageIcon(START_BUTTON_SOURCE),new Rectangle(126,200,120,40));
 
         add(startButton);
+    }
+
+    public ButtonOnPage getStartButton() {
+        return startButton;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(boardWidth, boardHeight);
+        return new Dimension(pageWidth, pageHeight);
     }
 }

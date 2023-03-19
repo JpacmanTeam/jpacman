@@ -1,7 +1,6 @@
 package nl.tudelft.jpacman.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import nl.tudelft.jpacman.board.Start;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
 
@@ -55,6 +53,11 @@ public class PacManUI extends JFrame {
     private final BoardPanel boardPanel;
 
     /**
+     * The layout for set the main panel's layout.
+     * */
+    private final CardLayout cardLayout = new CardLayout();
+
+    /**
      * Creates a new UI for a JPacman game.
      *
      * @param game
@@ -82,6 +85,10 @@ public class PacManUI extends JFrame {
         addKeyListener(keys);
 
         JPanel buttonPanel = new ButtonPanel(buttons, this);
+        JPanel gameContainer = new JPanel();
+        StartPanel startPanel = new StartPanel();
+        LosePanel losePanel = new LosePanel();
+        WinPanel winPanel = new WinPanel();
 
         scorePanel = new ScorePanel(game.getPlayers());
         if (scoreFormatter != null) {
@@ -91,10 +98,21 @@ public class PacManUI extends JFrame {
         boardPanel = new BoardPanel(game);
 
         Container contentPanel = getContentPane();
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(buttonPanel, BorderLayout.SOUTH);
-        contentPanel.add(scorePanel, BorderLayout.NORTH);
-        contentPanel.add(boardPanel, BorderLayout.CENTER);
+        contentPanel.setLayout(cardLayout);
+
+        contentPanel.add(startPanel,"home");
+        contentPanel.add(gameContainer,"game");
+        contentPanel.add(losePanel,"lose");
+        contentPanel.add(winPanel,"win");
+
+        gameContainer.setLayout(new BorderLayout());
+        gameContainer.add(buttonPanel, BorderLayout.SOUTH);
+        gameContainer.add(scorePanel, BorderLayout.NORTH);
+        gameContainer.add(boardPanel, BorderLayout.CENTER);
+
+        startPanel.getStartButton().addActionListener(e->{
+            cardLayout.show(contentPanel,"game");
+        });
 
         pack();
     }
