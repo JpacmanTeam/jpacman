@@ -1,14 +1,15 @@
 package nl.tudelft.jpacman.ui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
@@ -50,8 +51,6 @@ public class PacManUI extends JFrame {
      */
     private final BoardPanel boardPanel;
 
-    private CardLayout cardLayout;
-
     /**
      * Creates a new UI for a JPacman game.
      *
@@ -88,36 +87,11 @@ public class PacManUI extends JFrame {
 
         boardPanel = new BoardPanel(game);
 
-        cardLayout = new CardLayout();
-
-        //Container contentPanel = getContentPane();
-        //contentPanel.setLayout(new BorderLayout());
-        //contentPanel.add(buttonPanel, BorderLayout.SOUTH);
-        //contentPanel.add(scorePanel, BorderLayout.NORTH);
-        //contentPanel.add(boardPanel, BorderLayout.CENTER);
         Container contentPanel = getContentPane();
-        contentPanel.setLayout(cardLayout);
-
-
-        JPanel a = new JPanel();
-        JLabel label = new JLabel("Home");
-        a.add(label);
-        JPanel ctn = new JPanel();
-        JButton testBtn = new JButton("to game");
-        a.add(testBtn);
-        contentPanel.add(a,"test");
-        ctn.setLayout(new BorderLayout());
-        ctn.add(scorePanel,BorderLayout.NORTH);
-        ctn.add(boardPanel,BorderLayout.CENTER);
-        ctn.add(buttonPanel,BorderLayout.SOUTH);
-        contentPanel.add(ctn,"test2");
-        testBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(ctn.getParent(),"test2");
-            }
-        });
-
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+        contentPanel.add(scorePanel, BorderLayout.NORTH);
+        contentPanel.add(boardPanel, BorderLayout.CENTER);
 
         pack();
     }
