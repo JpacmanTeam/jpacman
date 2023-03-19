@@ -104,13 +104,46 @@ public abstract class Game implements LevelObserver {
         }
     }
 
+    /**
+     * Store player's status
+     */
+    public static enum PLAYER_STATUS{
+        WIN,
+        LOST,
+        PLAYING
+    }
+
+    /**
+     * Default player's status to playing.
+     */
+    private PLAYER_STATUS playerStatus = PLAYER_STATUS.PLAYING;
+
+    /**
+     * @return The current player's status.
+     * @return
+     */
+    public PLAYER_STATUS getPlayerStatus(){
+        return playerStatus;
+    }
+
+    /**
+     * Set player's status.
+     * @param ps
+     *          Status the player is currently in.
+     */
+    public void setPlayerStatus(PLAYER_STATUS ps){
+        playerStatus = ps;
+    }
+
     @Override
     public void levelWon() {
+        setPlayerStatus(PLAYER_STATUS.WIN);
         stop();
     }
 
     @Override
     public void levelLost() {
+        setPlayerStatus(PLAYER_STATUS.LOST);
         stop();
     }
 }
