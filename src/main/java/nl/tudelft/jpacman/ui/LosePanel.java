@@ -7,6 +7,7 @@ import java.awt.*;
 
 /**
  * A panel defined by a lost page of game includes buttons.
+ * @author Saksit Sirisakda
  */
 public class LosePanel extends JPanel {
 

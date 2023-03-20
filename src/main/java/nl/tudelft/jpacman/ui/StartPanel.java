@@ -7,6 +7,7 @@ import java.awt.*;
 
 /**
  * A panel defined by a home page of game includes buttons.
+ * @author Saksit Sirisakda
  */
 public class StartPanel extends JPanel {
 

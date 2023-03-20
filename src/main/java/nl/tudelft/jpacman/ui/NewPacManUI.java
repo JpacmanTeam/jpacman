@@ -143,6 +143,9 @@ public class NewPacManUI extends JFrame {
         scorePanel.refresh();
     }
 
+    /**
+     * Prepare key controller for each level game
+     * */
     private void bindKeyControllerToCurrentGame(){
         PacKeyListener keys = getKeysControlOfGame();
         this.setFocusable(true);
@@ -150,12 +153,19 @@ public class NewPacManUI extends JFrame {
         addKeyListener(keys);
     }
 
+    /**
+     * move player's pacman to given direction
+     * */
     private Action moveTowardsDirection( Direction direction) {
         return () -> {
             assert currentGame != null;
             currentGame.move(currentGame.getPlayers().get(0), direction);
         };
     }
+
+    /**
+     * Map the control key that using in the game
+     * */
     private PacKeyListener getKeysControlOfGame(){
         assert currentGame != null;
         Map<Integer,Action> keys = new HashMap<>();
@@ -182,6 +192,10 @@ public class NewPacManUI extends JFrame {
         PacKeyListener pacKeyListener = new PacKeyListener(keys);
         return pacKeyListener;
     }
+
+    /**
+     * prepare button in button panel for each level game
+     * */
     private JPanel getButtonPanelOfGame(){
         assert currentGame != null;
         var button = new HashMap<String,Action>();
@@ -191,6 +205,9 @@ public class NewPacManUI extends JFrame {
         return buttonPanel;
     }
 
+    /**
+     * create event when player lose the game
+     * */
     private void setLoseEvent(){
         currentGame.setLostAction(()->{
 //            System.out.println("lost");
@@ -201,6 +218,10 @@ public class NewPacManUI extends JFrame {
 //            currentGame.start();
         });
     }
+
+    /**
+     * create event when player win the game
+     * */
     private void setWinEvent(){
         currentGame.setWinAction(()->{
             System.out.println("win");

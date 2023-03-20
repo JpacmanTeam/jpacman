@@ -61,7 +61,7 @@ public class PacManUiBuilder {
      * @return A new Pac-Man UI with the set keys and buttons.
      */
     public PacManUI build(final Game game) {
-
+        assert game != null;
         if (defaultButtons) {
             addStartButton(game);
             addStopButton(game);
