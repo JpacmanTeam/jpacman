@@ -17,6 +17,7 @@ import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.points.PointCalculatorLoader;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.Action;
+import nl.tudelft.jpacman.ui.NewPacManUI;
 import nl.tudelft.jpacman.ui.PacManUI;
 import nl.tudelft.jpacman.ui.PacManUiBuilder;
 
@@ -225,6 +226,10 @@ public class Launcher {
      *             When a resource could not be read.
      */
     public static void main(String[] args) throws IOException {
-        new Launcher().launch();
+//        new Launcher().launch();
+        SinglePlayerPacmanFactory singlePlayerPacmanFactory = new SinglePlayerPacmanFactory();
+        Game game = singlePlayerPacmanFactory.createPacmanLevel1();
+        var pacManUI = new NewPacManUI();
+        pacManUI.start();
     }
 }

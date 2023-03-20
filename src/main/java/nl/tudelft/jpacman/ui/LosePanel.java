@@ -75,5 +75,13 @@ public class LosePanel extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(pageWidth, pageHeight);
     }
+
+    public ButtonOnPage getHomeButton() {
+        return homeButton;
+    }
+
+    public ButtonOnPage getRetryButton() {
+        return retryButton;
+    }
 }
 
