@@ -76,6 +76,22 @@ public class SinglePlayerPacmanFactory {
     }
 
     /**
+     * create pacman game following given level
+     * @param level given level
+     * @return game following level
+     */
+    public Game createPacman(int level){
+        switch (level){
+            case 1: return createPacmanLevel1();
+            case 2: return createPacmanLevel2();
+            case 3: return createPacmanLevel3();
+            case 4: return createPacmanLevel4();
+            case 5: return createPacmanLevel5();
+            default: throw new PacmanConfigurationException("Unable to create level, name = " + level);
+        }
+    }
+
+    /**
      * Create Pacman game with map from {@code char[][] map}
      * @param map map as {@code char[][]}
      * @return a game that created by {@code  map}

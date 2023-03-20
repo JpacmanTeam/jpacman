@@ -209,10 +209,7 @@ public class Launcher {
      *             When a resource could not be read.
      */
     public static void main(String[] args) throws IOException {
-//        new Launcher().launch();
-        SinglePlayerPacmanFactory singlePlayerPacmanFactory = new SinglePlayerPacmanFactory();
-        Game game = singlePlayerPacmanFactory.createPacmanLevel1();
-        var pacManUI = new NewPacManUI();
+        NewPacManUI pacManUI = new NewPacManUI();
         pacManUI.start();
     }
 }

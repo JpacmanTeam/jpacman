@@ -13,6 +13,9 @@ import nl.tudelft.jpacman.points.PointCalculatorLoader;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -99,6 +102,24 @@ public class SinglePlayerPacmanFactoryTest {
         assertNotNull(game);
         assertTrue(game instanceof SinglePlayerGame);
         assertFalse(game.isInProgress());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1","2","3","4","5"})
+    public void testCreatePacmanFromGivenNumber(int level){
+        Game game = factory.createPacman(level);
+
+        assertNotNull(game);
+        assertTrue(game instanceof SinglePlayerGame);
+        assertFalse(game.isInProgress());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"0","-1","6"})
+    public void testCreatePacmanFromGivenIllegalNumber(int level){
+        assertThrows(Exception.class, ()->{
+            factory.createPacman(level);
+        });
     }
 
     /**
