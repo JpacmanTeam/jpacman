@@ -72,6 +72,87 @@ public class NewPacManUI extends JFrame {
     private int currentLevel;
 
     /**
+     * getter for score UI
+     *
+     * @return a score panel in UI
+     */
+    public ScorePanel getScorePanel() {
+        return scorePanel;
+    }
+
+    /**
+     * getter for board game UI
+     *
+     * @return a Pacman game in UI
+     */
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
+    }
+
+    /**
+     * getter for {@link Game} at current level
+     *
+     * @return a game in current level
+     */
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    /**
+     * getter for game container
+     *
+     * @return a game UI
+     */
+    public JPanel getGameContainer() {
+        return gameContainer;
+    }
+
+    /**
+     * getter for start and stop btn in game UI
+     *
+     * @return a btn panel
+     */
+    public JPanel getButtonPanel() {
+        return buttonPanel;
+    }
+
+    /**
+     * getter for Home UI
+     *
+     * @return a home UI
+     */
+    public StartPanel getStartPanel() {
+        return startPanel;
+    }
+
+    /**
+     * getter for lose UI
+     *
+     * @return a lose UI
+     */
+    public LosePanel getLosePanel() {
+        return losePanel;
+    }
+
+    /**
+     * getter for win UI
+     *
+     * @return a win UI
+     */
+    public WinPanel getWinPanel() {
+        return winPanel;
+    }
+
+    /**
+     * getter for content panel
+     *
+     * @return a content panel
+     */
+    public Container getContentPanel() {
+        return contentPanel;
+    }
+
+    /**
      * Creates a new UI for a JPacman game.
      */
     public NewPacManUI() {

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,18 @@ public class SinglePlayerPacmanFactoryTest {
         assertNotNull(game);
         assertTrue(game instanceof SinglePlayerGame);
         assertFalse(game.isInProgress());
+    }
+
+    /**
+     * test create game from not existed file map
+     */
+    @Test
+    public void testCreatePacmanFromNotExistedFile() {
+        String map = "notExistedFile";
+
+        assertThrows(PacmanConfigurationException.class, ()->{
+            factory.createPacman("");
+        });
     }
 
     /**
