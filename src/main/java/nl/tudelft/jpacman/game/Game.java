@@ -142,14 +142,14 @@ public abstract class Game implements LevelObserver {
     public void levelWon() {
         setPlayerStatus(PLAYER_STATUS.WIN);
         stop();
-        winAction.doAction();
+        if(winAction!=null) winAction.doAction();
     }
 
     @Override
     public void levelLost() {
         setPlayerStatus(PLAYER_STATUS.LOST);
         stop();
-        lostAction.doAction();
+        if(lostAction!=null) lostAction.doAction();
     }
 
     public void setLostAction(Action lostAction) {
