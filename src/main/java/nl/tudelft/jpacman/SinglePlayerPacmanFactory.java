@@ -69,7 +69,7 @@ public class SinglePlayerPacmanFactory {
         try {
             Level level = mapParser.parseMap(map);
             return gameFactory.createSinglePlayerGame(level,pointCalculator);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new PacmanConfigurationException(
                 "Unable to create level, name = " + LEVEL_1, e);
         }
