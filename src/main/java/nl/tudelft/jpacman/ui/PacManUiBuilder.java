@@ -56,18 +56,21 @@ public class PacManUiBuilder {
     /**
      * Creates a new Pac-Man UI with the set keys and buttons.
      *
-     * @param game
+     * @param game1
      *            The game to build the UI for.
      * @return A new Pac-Man UI with the set keys and buttons.
      */
-    public PacManUI build(final Game game) {
-        assert game != null;
+    public PacManUI build(final Game game1, final Game game2) {
+        assert game1 != null;
+        assert game2 != null;
 
         if (defaultButtons) {
-            addStartButton(game);
-            addStopButton(game);
+            addStartButton(game1);
+            addStopButton(game1);
+            addStartButton(game2);
+            addStopButton(game2);
         }
-        return new PacManUI(game, buttons, keyMappings, scoreFormatter);
+        return new PacManUI(game1, game2, buttons, keyMappings, scoreFormatter);
     }
 
     /**
@@ -156,4 +159,5 @@ public class PacManUiBuilder {
         this.scoreFormatter = scoreFormatter;
         return this;
     }
+
 }

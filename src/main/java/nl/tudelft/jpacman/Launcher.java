@@ -33,9 +33,20 @@ public class Launcher {
 
     public static final String DEFAULT_MAP = "/board.txt";
     private String levelMap = DEFAULT_MAP;
+    /**
+     * Testing for map 2
+     */
+    public static final String DEFAULT_MAP2 = "/board2.txt";
+    private String levelMap2 = DEFAULT_MAP2;
 
     private PacManUI pacManUI;
     private Game game;
+    /**
+     * Testing for game 2
+     *
+     * Add gameCollection to collect game and game2 into array.
+     */
+    private Game game2;
 
     /**
      * @return The game object this launcher will start when {@link #launch()}
@@ -44,13 +55,19 @@ public class Launcher {
     public Game getGame() {
         return game;
     }
+    public Game getGame2() { return game2; }
 
     /**
      * The map file used to populate the level.
      *
+     * if don't get parameter of 0, return board2.txt, else return board.txt
+     *
      * @return The name of the map file.
      */
-    protected String getLevelMap() {
+    protected String getLevelMap(Integer Number) {
+        if (Number != 0){
+            return levelMap2;
+        };
         return levelMap;
     }
 
@@ -71,9 +88,14 @@ public class Launcher {
      *
      * @return a new Game.
      */
-    public Game makeGame() {
+    public Game makeGame(Integer Number) {
         GameFactory gf = getGameFactory();
-        Level level = makeLevel();
+        Level level = makeLevel(0);
+        if (Number != 0) {
+            level = makeLevel(Number);
+            game2 = gf.createSinglePlayerGame(level, loadPointCalculator());
+            return game2;
+        }
         game = gf.createSinglePlayerGame(level, loadPointCalculator());
         return game;
     }
@@ -86,14 +108,24 @@ public class Launcher {
      * Creates a new level. By default this method will use the map parser to
      * parse the default board stored in the <code>board.txt</code> resource.
      *
+     * In case the parameter is being received, function will parse to board 2.
+     *
      * @return A new level.
      */
     public Level makeLevel() {
         try {
-            return getMapParser().parseMap(getLevelMap());
+            return getMapParser().parseMap(getLevelMap(0));
         } catch (IOException e) {
             throw new PacmanConfigurationException(
-                    "Unable to create level, name = " + getLevelMap(), e);
+                    "Unable to create level, name = " + getLevelMap(0), e);
+        }
+    }
+    public Level makeLevel(Integer Number) {
+        try {
+            return getMapParser().parseMap(getLevelMap(Number));
+        } catch (IOException e) {
+            throw new PacmanConfigurationException(
+                "Unable to create level, name = " + getLevelMap(Number), e);
         }
     }
 
@@ -181,16 +213,17 @@ public class Launcher {
      * Creates and starts a JPac-Man game.
      */
     public void launch() {
-        makeGame();
+        makeGame(0);
+        makeGame(1);
         PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
         addSinglePlayerKeys(builder);
-        pacManUI = builder.build(getGame());
+        pacManUI = builder.build(getGame(),getGame2());
         pacManUI.start();
     }
 
     /**
      * Disposes of the UI. For more information see
-     * {@link javax.swing.JFrame#dispose()}.
+     * {@link javax.swing.JFrame #dispose()}.
      *
      * Precondition: The game was launched first.
      */
