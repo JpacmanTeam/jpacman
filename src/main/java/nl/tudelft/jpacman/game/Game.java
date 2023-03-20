@@ -7,11 +7,12 @@ import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Level.LevelObserver;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.ui.Action;
 
 /**
  * A basic implementation of a Pac-Man game.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 public abstract class Game implements LevelObserver {
 
@@ -29,8 +30,10 @@ public abstract class Game implements LevelObserver {
      * The algorithm used to calculate the points that
      * they player gets whenever some action happens.
      */
-    private PointCalculator pointCalculator;
+    private final PointCalculator pointCalculator;
 
+    private Action winAction;
+    private Action lostAction;
     /**
      * Creates a new game.
      *
@@ -104,13 +107,64 @@ public abstract class Game implements LevelObserver {
         }
     }
 
+    /**
+     * Store player's status
+     */
+    public enum PLAYER_STATUS{
+        WIN,
+        LOST,
+        PLAYING
+    }
+
+    /**
+     * Default player's status to playing.
+     */
+    private PLAYER_STATUS playerStatus = PLAYER_STATUS.PLAYING;
+
+    /**
+     * @return The current player's status.
+     * @return
+     */
+    public PLAYER_STATUS getPlayerStatus(){
+        return playerStatus;
+    }
+
+    /**
+     * Set player's status.
+     * @param ps
+     *          Status the player is currently in.
+     */
+    public void setPlayerStatus(PLAYER_STATUS ps){
+        playerStatus = ps;
+    }
+
     @Override
     public void levelWon() {
+        setPlayerStatus(PLAYER_STATUS.WIN);
         stop();
+        winAction.doAction();
     }
 
     @Override
     public void levelLost() {
+        setPlayerStatus(PLAYER_STATUS.LOST);
         stop();
+        lostAction.doAction();
     }
+
+    public void setLostAction(Action lostAction) {
+        this.lostAction = lostAction;
+    }
+
+    public void setWinAction(Action winAction) {
+        this.winAction = winAction;
+    }
+
+    /**
+     * Returns true if there is a next level available, false otherwise.
+     */
+
+    /**
+     * Starts the next level.
+     */
 }

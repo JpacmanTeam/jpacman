@@ -4,8 +4,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
-import nl.tudelft.jpacman.board.BoardFactory;
-import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.*;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.level.Level;
@@ -18,12 +17,13 @@ import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.points.PointCalculatorLoader;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.Action;
+import nl.tudelft.jpacman.ui.NewPacManUI;
 import nl.tudelft.jpacman.ui.PacManUI;
 import nl.tudelft.jpacman.ui.PacManUiBuilder;
 
 /**
  * Creates and launches the JPacMan UI.
- * 
+ *
  * @author Jeroen Roosen
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -31,7 +31,7 @@ public class Launcher {
 
     private static final PacManSprites SPRITE_STORE = new PacManSprites();
 
-    public static final String DEFAULT_MAP = "/board.txt";
+    public static final String DEFAULT_MAP = "/board4.txt";
     private String levelMap = DEFAULT_MAP;
 
     private PacManUI pacManUI;
@@ -93,7 +93,7 @@ public class Launcher {
             return getMapParser().parseMap(getLevelMap());
         } catch (IOException e) {
             throw new PacmanConfigurationException(
-                    "Unable to create level, name = " + getLevelMap(), e);
+                "Unable to create level, name = " + getLevelMap(), e);
         }
     }
 
@@ -157,9 +157,9 @@ public class Launcher {
      */
     protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
         builder.addKey(KeyEvent.VK_UP, moveTowardsDirection(Direction.NORTH))
-                .addKey(KeyEvent.VK_DOWN, moveTowardsDirection(Direction.SOUTH))
-                .addKey(KeyEvent.VK_LEFT, moveTowardsDirection(Direction.WEST))
-                .addKey(KeyEvent.VK_RIGHT, moveTowardsDirection(Direction.EAST));
+            .addKey(KeyEvent.VK_DOWN, moveTowardsDirection(Direction.SOUTH))
+            .addKey(KeyEvent.VK_LEFT, moveTowardsDirection(Direction.WEST))
+            .addKey(KeyEvent.VK_RIGHT, moveTowardsDirection(Direction.EAST));
     }
 
     private Action moveTowardsDirection(Direction direction) {
@@ -197,6 +197,24 @@ public class Launcher {
     public void dispose() {
         assert pacManUI != null;
         pacManUI.dispose();
+
+    }
+
+    /**
+     * Restart the game by dispose old game frame and launch new game frame instead
+     * @return Action, pack of function that dispose and launch
+     */
+    public Action restart(){
+        return ()->{
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.LOST){
+                dispose();
+                launch();
+            }
+            if (getGame().getPlayerStatus() == Game.PLAYER_STATUS.WIN){
+                dispose();
+                withMapFile("/board.txt1").launch();
+            }
+        };
     }
 
     /**
@@ -208,6 +226,10 @@ public class Launcher {
      *             When a resource could not be read.
      */
     public static void main(String[] args) throws IOException {
-        new Launcher().launch();
+//        new Launcher().launch();
+        SinglePlayerPacmanFactory singlePlayerPacmanFactory = new SinglePlayerPacmanFactory();
+        Game game = singlePlayerPacmanFactory.createPacmanLevel1();
+        var pacManUI = new NewPacManUI();
+        pacManUI.start();
     }
 }
