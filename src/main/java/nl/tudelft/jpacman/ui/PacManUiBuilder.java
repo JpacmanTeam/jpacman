@@ -62,7 +62,6 @@ public class PacManUiBuilder {
      */
     public PacManUI build(final Game game) {
         assert game != null;
-
         if (defaultButtons) {
             addStartButton(game);
             addStopButton(game);

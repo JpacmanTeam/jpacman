@@ -7,6 +7,7 @@ import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Level.LevelObserver;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.ui.Action;
 
 /**
  * A basic implementation of a Pac-Man game.
@@ -31,6 +32,14 @@ public abstract class Game implements LevelObserver {
      */
     private PointCalculator pointCalculator;
 
+    /**
+     * The action perform when player win the game
+     * */
+    private Action winAction;
+    /**
+     * The action perform when player lose the game
+     * */
+    private Action lostAction;
     /**
      * Creates a new game.
      *
@@ -107,10 +116,26 @@ public abstract class Game implements LevelObserver {
     @Override
     public void levelWon() {
         stop();
+        if(winAction !=null) winAction.doAction();
     }
 
     @Override
     public void levelLost() {
         stop();
+        if(lostAction != null) lostAction.doAction();
+    }
+
+    /**
+     * Set the action when player lose the game
+     * */
+    public void setLostAction(Action lostAction) {
+        this.lostAction = lostAction;
+    }
+
+    /**
+     * Set the action when player win the game
+     * */
+    public void setWinAction(Action winAction) {
+        this.winAction = winAction;
     }
 }
