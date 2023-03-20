@@ -51,6 +51,9 @@ public class SinglePlayerPacmanFactoryTest {
         assertFalse(game.isInProgress());
     }
 
+    /**
+     * test create game from not existed file map
+     */
     @Test
     public void testCreatePacmanFromNotExistedFile() {
         String map = "notExistedFile";

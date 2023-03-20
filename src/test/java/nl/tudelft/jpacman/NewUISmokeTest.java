@@ -16,10 +16,30 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Smoke test launching the full game,
+ * and attempting to make a number of typical moves.
+ *
+ * This is <strong>not</strong> a <em>unit</em> test -- it is an end-to-end test
+ * trying to execute a large portion of the system's behavior directly from the
+ * user interface. It uses the actual sprites and monster AI, and hence
+ * has little control over what is happening in the game.
+ *
+ * Because it is an end-to-end test, it is somewhat longer
+ * and has more assert statements than what would be good
+ * for a small and focused <em>unit</em> test.
+ *
+ * @author Anirut Chaogla
+ */
+
 public class NewUISmokeTest {
     private NewPacManUI pacManUI;
     private static Robot bot;
 
+    /**
+     * create {@link #pacManUI} instant then start it
+     * and create new Robot
+     */
     @BeforeEach
     void setup(){
         pacManUI = new NewPacManUI();
@@ -29,11 +49,19 @@ public class NewUISmokeTest {
         }catch (Exception e){}
     }
 
+    /**
+     * dispose {@link #pacManUI}
+     */
     @AfterEach
     void tearDown(){
         pacManUI.dispose();
     }
 
+    /**
+     * << Smoke test | UAT >>
+     *
+     * @throws InterruptedException
+     */
     @Test
     void smokeTest() throws InterruptedException {
 
@@ -94,12 +122,23 @@ public class NewUISmokeTest {
         }
     }
 
+    /**
+     * virtualize pressing key
+     *
+     * @param keys key to virtualizing
+     */
     public static void pressKey(int ...keys){
         for (int key : keys) {
             bot.keyPress(key);
         }
     }
 
+    /**
+     * virtualize pressing key with repeat it
+     *
+     * @param n number to repeat virtualizing
+     * @param keys key to virtualizing
+     */
     public static void pressKeyN(int n, int ...keys){
         for (int i = 0; i < n; i++) {
             pressKey(keys);
