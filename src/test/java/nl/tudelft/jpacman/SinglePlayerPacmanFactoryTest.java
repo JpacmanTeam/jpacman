@@ -14,6 +14,7 @@ import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +49,18 @@ public class SinglePlayerPacmanFactoryTest {
         assertNotNull(game);
         assertTrue(game instanceof SinglePlayerGame);
         assertFalse(game.isInProgress());
+    }
+
+    /**
+     * test create game from not existed file map
+     */
+    @Test
+    public void testCreatePacmanFromNotExistedFile() {
+        String map = "notExistedFile";
+
+        assertThrows(PacmanConfigurationException.class, ()->{
+            factory.createPacman("");
+        });
     }
 
     /**
