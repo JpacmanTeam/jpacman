@@ -20,6 +20,10 @@ public class NewUISmokeTest {
     private NewPacManUI pacManUI;
     private static Robot bot;
 
+    /**
+     * create {@link #pacManUI} instant then start it
+     * and create new Robot
+     */
     @BeforeEach
     void setup(){
         pacManUI = new NewPacManUI();
@@ -29,11 +33,19 @@ public class NewUISmokeTest {
         }catch (Exception e){}
     }
 
+    /**
+     * dispose {@link #pacManUI}
+     */
     @AfterEach
     void tearDown(){
         pacManUI.dispose();
     }
 
+    /**
+     * << Smoke test | UAT >>
+     *
+     * @throws InterruptedException
+     */
     @Test
     void smokeTest() throws InterruptedException {
 
@@ -94,12 +106,23 @@ public class NewUISmokeTest {
         }
     }
 
+    /**
+     * virtualize pressing key
+     *
+     * @param keys key to virtualizing
+     */
     public static void pressKey(int ...keys){
         for (int key : keys) {
             bot.keyPress(key);
         }
     }
 
+    /**
+     * virtualize pressing key with repeat it
+     *
+     * @param n number to repeat virtualizing
+     * @param keys key to virtualizing
+     */
     public static void pressKeyN(int n, int ...keys){
         for (int i = 0; i < n; i++) {
             pressKey(keys);
