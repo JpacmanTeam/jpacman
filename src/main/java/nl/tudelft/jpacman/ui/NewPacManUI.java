@@ -67,6 +67,43 @@ public class NewPacManUI extends JFrame {
     private LosePanel losePanel;
     private WinPanel winPanel;
     private Container contentPanel;
+
+    public ScorePanel getScorePanel() {
+        return scorePanel;
+    }
+
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public JPanel getGameContainer() {
+        return gameContainer;
+    }
+
+    public JPanel getButtonPanel() {
+        return buttonPanel;
+    }
+
+    public StartPanel getStartPanel() {
+        return startPanel;
+    }
+
+    public LosePanel getLosePanel() {
+        return losePanel;
+    }
+
+    public WinPanel getWinPanel() {
+        return winPanel;
+    }
+
+    public Container getContentPanel() {
+        return contentPanel;
+    }
+
     /**
      * Creates a new UI for a JPacman game.
      */
