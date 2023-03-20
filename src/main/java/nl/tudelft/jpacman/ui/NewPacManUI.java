@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * <li>A button panel, containing all buttons provided upon creation.
  * </ul>
  *
- * @author Jeroen Roosen 
+ * @author Saksit and Anirut
  *
  */
 public class NewPacManUI extends JFrame {
