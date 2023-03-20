@@ -37,7 +37,7 @@ public class WinPanel extends JPanel {
     /**
      * height of page
      */
-    private final int pageHeight = 420;
+    private final int pageHeight = 400;
 
     /**
      * background image object
@@ -67,11 +67,11 @@ public class WinPanel extends JPanel {
         background = new ImageIcon(BACKGROUND_SOURCE).getImage();
 
         //define retry button by image source and size
-        retryButton = new ButtonOnPage(new ImageIcon(RETRY_BUTTON_SOURCE),new Rectangle(130,200,100,40));
+        retryButton = new ButtonOnPage(new ImageIcon(RETRY_BUTTON_SOURCE),new Rectangle(130,200,120,40));
         //define next button by image source and size
-        nextButton = new ButtonOnPage(new ImageIcon(NEXT_BUTTON_SOURCE),new Rectangle(130,250,100,40));
+        nextButton = new ButtonOnPage(new ImageIcon(NEXT_BUTTON_SOURCE),new Rectangle(130,275,120,40));
         //define home button by image source and size
-        homeButton = new ButtonOnPage(new ImageIcon(HOME_BUTTON_SOURCE),new Rectangle(130,300,100,40));
+        homeButton = new ButtonOnPage(new ImageIcon(HOME_BUTTON_SOURCE),new Rectangle(130,350,120,40));
 
         add(retryButton);
         add(nextButton);

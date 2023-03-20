@@ -28,7 +28,7 @@ public class StartPanel extends JPanel {
     /**
      * height of page
      */
-    private final int pageHeight = 420;
+    private final int pageHeight = 400;
 
     /**
      * background image object
