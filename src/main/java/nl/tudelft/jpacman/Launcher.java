@@ -31,7 +31,7 @@ public class Launcher {
 
     private static final PacManSprites SPRITE_STORE = new PacManSprites();
 
-    public static final String DEFAULT_MAP = "/board4.txt";
+    public static final String DEFAULT_MAP = "/board.txt";
     private String levelMap = DEFAULT_MAP;
 
     private PacManUI pacManUI;
@@ -209,10 +209,7 @@ public class Launcher {
      *             When a resource could not be read.
      */
     public static void main(String[] args) throws IOException {
-//        new Launcher().launch();
-        SinglePlayerPacmanFactory singlePlayerPacmanFactory = new SinglePlayerPacmanFactory();
-        Game game = singlePlayerPacmanFactory.createPacmanLevel1();
-        var pacManUI = new NewPacManUI();
+        NewPacManUI pacManUI = new NewPacManUI();
         pacManUI.start();
     }
 }

@@ -3,9 +3,11 @@ package nl.tudelft.jpacman.ui;
 import nl.tudelft.jpacman.SinglePlayerPacmanFactory;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.pageUtil.ButtonOnPage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -67,15 +69,18 @@ public class NewPacManUI extends JFrame {
     private LosePanel losePanel;
     private WinPanel winPanel;
     private Container contentPanel;
+    private int currentLevel;
+
     /**
      * Creates a new UI for a JPacman game.
      */
     public NewPacManUI() {
         super("JPacman");
-
-        currentGame = pacmanGameFactory.createPacmanLevel1();
-
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        currentLevel = 1;
+        currentGame = pacmanGameFactory.createPacman(currentLevel);
 
         bindKeyControllerToCurrentGame();
 
@@ -94,36 +99,48 @@ public class NewPacManUI extends JFrame {
 
         addGameToGameContainer();
 
-        startPanel.getStartButton().addActionListener(e->{
-            cardLayout.show(contentPanel,"game");
+        buttonMapper(startPanel.getStartButton(),"game");
+        buttonMapper(losePanel.getHomeButton(),"home");
+        buttonMapper(losePanel.getRetryButton(),"game");
+        buttonMapper(winPanel.getHomeButton(),"home",()->{
+            if(currentLevel > 5){
+                currentLevel = 1;
+            }
         });
-        losePanel.getHomeButton().addActionListener(e->{
-            cardLayout.show(contentPanel,"home");
-            removeGameContainer();
-            currentGame = pacmanGameFactory.createPacmanLevel1();
-            addGameToGameContainer();
+        buttonMapper(winPanel.getRetryButton(),"game",()->{
+            currentLevel--;
         });
-        losePanel.getRetryButton().addActionListener(e->{
-            cardLayout.show(contentPanel,"game");
-            removeGameContainer();
-            currentGame = pacmanGameFactory.createPacmanLevel1();
-            addGameToGameContainer();
+        buttonMapper(winPanel.getNextButton(),"game",()->{
+            if(currentLevel > 5){
+                cardLayout.show(contentPanel,"home");
+                currentLevel = 1;
+            }
         });
+
         pack();
     }
 
+    /**
+     * add new game to game container
+     */
     private void addGameToGameContainer(){
         setWinEvent();
         setLoseEvent();
+
         buttonPanel = getButtonPanelOfGame();
         scorePanel = new ScorePanel(currentGame.getPlayers());
         boardPanel = new BoardPanel(currentGame);
+
         gameContainer.setLayout(new BorderLayout());
         gameContainer.add(buttonPanel, BorderLayout.SOUTH);
         gameContainer.add(scorePanel, BorderLayout.NORTH);
         gameContainer.add(boardPanel, BorderLayout.CENTER);
     }
-    private void removeGameContainer(){gameContainer.removeAll();}
+
+    /**
+     * clear game container
+     */
+    private void clearGameContainer(){gameContainer.removeAll();}
 
     /**
      * Starts the "engine", the thread that redraws the interface at set
@@ -210,12 +227,7 @@ public class NewPacManUI extends JFrame {
      * */
     private void setLoseEvent(){
         currentGame.setLostAction(()->{
-//            System.out.println("lost");
             cardLayout.show(contentPanel,"lose");
-//            removeGameContainer();
-//            currentGame = pacmanGameFactory.createPacmanLevel2();
-//            addGameToGameContainer();
-//            currentGame.start();
         });
     }
 
@@ -224,11 +236,50 @@ public class NewPacManUI extends JFrame {
      * */
     private void setWinEvent(){
         currentGame.setWinAction(()->{
-            System.out.println("win");
-            removeGameContainer();
-            currentGame = pacmanGameFactory.createPacmanLevel1();
-            addGameToGameContainer();
-            currentGame.start();
+            cardLayout.show(contentPanel,"win");
+            nextLevel();
+        });
+    }
+
+    /**
+     * increase current level
+     */
+    private void nextLevel(){
+        currentLevel++;
+    }
+
+    /**
+     * reset game by clear game container, then, create new current game and add it to container
+     */
+    private void resetGameState(){
+        clearGameContainer();
+        currentGame = pacmanGameFactory.createPacman(currentLevel);
+        addGameToGameContainer();
+    }
+
+    /**
+     * map action to button with specific action
+     * @param button button using in container
+     * @param target target page (card) after clicking button
+     * @param additionAction specific action that do difference from other
+     */
+    private void buttonMapper(ButtonOnPage button, String target, Action additionAction){
+        button.addActionListener(e->{
+            cardLayout.show(contentPanel,target);
+            additionAction.doAction();
+            resetGameState();
+        });
+    }
+
+    /**
+     * map action to button with specific action
+     * @param button button using in container
+     * @param target target page (card) after clicking button
+     */
+    private void buttonMapper(ButtonOnPage button, String target){
+        button.addActionListener(e->{
+            cardLayout.show(contentPanel,target);
+            resetGameState();
         });
     }
 }
