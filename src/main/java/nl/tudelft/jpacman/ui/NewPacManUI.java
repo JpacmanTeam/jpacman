@@ -220,6 +220,9 @@ public class NewPacManUI extends JFrame {
         gameContainer.add(buttonPanel, BorderLayout.SOUTH);
         gameContainer.add(scorePanel, BorderLayout.NORTH);
         gameContainer.add(boardPanel, BorderLayout.CENTER);
+
+        scorePanel.setLayout(new GridLayout(3,1));
+        scorePanel.add(new JLabel("Level "+currentLevel,JLabel.CENTER));
     }
 
     /**
