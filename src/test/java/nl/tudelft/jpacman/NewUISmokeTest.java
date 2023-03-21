@@ -62,9 +62,6 @@ public class NewUISmokeTest {
      *
      * @throws InterruptedException
      */
-    @Test
-    void smokeTest() throws InterruptedException {
-    }
 
     @Test
     void showStartMenuWhenOpened()  {
@@ -177,13 +174,13 @@ public class NewUISmokeTest {
         startGame();
 
         for (int i = 0; i < 5; i++) {
+            pacManUI.getCurrentGame().start();
             assertTrue(pacManUI.getGameContainer().isShowing());
             pressKeyN(10,VK_LEFT);
             waitForUserSee(0.5);
             assertTrue(pacManUI.getWinPanel().isShowing());
             pacManUI.getWinPanel().getNextButton().doClick();
             waitForUserSee(0.5);
-            pacManUI.getCurrentGame().start();
         }
 
         waitForUserSee(1);
@@ -191,10 +188,11 @@ public class NewUISmokeTest {
     }
 
     @Test
-    void showStartMenuWhenClickHomeOnEndgame(){
-        showWinPageWhenYouWin();
+    void showStartMenuWhenClickHomeOnEndgame() throws InterruptedException {
+        showEndGameWhenPassFiveLevel();
 
         pacManUI.getEndAllPanel().getHomeButton().doClick();
+        waitForUserSee();
 
         assertTrue(pacManUI.getStartPanel().isShowing());
     }
