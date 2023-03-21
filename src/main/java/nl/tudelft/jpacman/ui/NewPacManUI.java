@@ -68,6 +68,7 @@ public class NewPacManUI extends JFrame {
     private StartPanel startPanel;
     private LosePanel losePanel;
     private WinPanel winPanel;
+    private EndAllPanel endAllPanel;
     private Container contentPanel;
     private int currentLevel;
 
@@ -169,6 +170,7 @@ public class NewPacManUI extends JFrame {
         startPanel = new StartPanel();
         losePanel = new LosePanel();
         winPanel = new WinPanel();
+        endAllPanel = new EndAllPanel();
 
         contentPanel = getContentPane();
         contentPanel.setLayout(cardLayout);
@@ -177,6 +179,7 @@ public class NewPacManUI extends JFrame {
         contentPanel.add(gameContainer,"game");
         contentPanel.add(losePanel,"lose");
         contentPanel.add(winPanel,"win");
+        contentPanel.add(endAllPanel,"end");
 
         addGameToGameContainer();
 
@@ -193,10 +196,11 @@ public class NewPacManUI extends JFrame {
         });
         buttonMapper(winPanel.getNextButton(),"game",()->{
             if(currentLevel > 5){
-                cardLayout.show(contentPanel,"home");
+                cardLayout.show(contentPanel,"end");
                 currentLevel = 1;
             }
         });
+        buttonMapper(endAllPanel.getHomeButton(),"home");
 
         pack();
     }
