@@ -73,6 +73,24 @@ public class NewPacManUI extends JFrame {
     private int currentLevel;
 
     /**
+     * getter for {@link #pacmanGameFactory}
+     *
+     * @return a Pacman game factory
+     */
+    public SinglePlayerPacmanFactory getPacmanGameFactory() {
+        return pacmanGameFactory;
+    }
+
+    /**
+     * setter for {@link #pacmanGameFactory}
+     *
+     * @param pacmanGameFactory a {@link SinglePlayerPacmanFactory} to set to {@link #pacmanGameFactory}
+     */
+    public void setPacmanGameFactory(SinglePlayerPacmanFactory pacmanGameFactory) {
+        this.pacmanGameFactory = pacmanGameFactory;
+    }
+
+    /**
      * getter for score UI
      *
      * @return a score panel in UI
@@ -142,6 +160,14 @@ public class NewPacManUI extends JFrame {
      */
     public WinPanel getWinPanel() {
         return winPanel;
+    }
+
+    /**
+     * getter for end-game UI
+     * @return an end game UI
+     */
+    public EndAllPanel getEndAllPanel() {
+        return endAllPanel;
     }
 
     /**

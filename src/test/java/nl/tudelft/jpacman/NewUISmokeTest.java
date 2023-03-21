@@ -4,16 +4,15 @@ import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.ui.NewPacManUI;
-import nl.tudelft.jpacman.ui.StartPanel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 
+import static java.awt.event.KeyEvent.VK_LEFT;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_SPACE;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -35,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NewUISmokeTest {
     private NewPacManUI pacManUI;
     private static Robot bot;
+    private Long DELAY_TIME = 1000L;
 
     /**
      * create {@link #pacManUI} instant then start it
@@ -64,48 +64,140 @@ public class NewUISmokeTest {
      */
     @Test
     void smokeTest() throws InterruptedException {
-
-        // Showing Home
-        assertTrue(pacManUI.getStartPanel().isShowing());
-        Thread.sleep(500L);
-
-        // Showing game after click start btn
-        pacManUI.getStartPanel().getStartButton().doClick();
-        assertTrue(pacManUI.getGameContainer().isShowing());
-        Thread.sleep(500L);
-
-        // start game
-        pressKey(KeyEvent.VK_SPACE);
-        Thread.sleep(500L);
-        assertTrue(pacManUI.getCurrentGame().isInProgress());
-
-        // stop game
-        pressKey(KeyEvent.VK_SPACE);
-        Thread.sleep(500L);
-        assertFalse(pacManUI.getCurrentGame().isInProgress());
-
-        // Showing Lose when lose
-        pressKey(KeyEvent.VK_SPACE);
-        pressKeyN(10,KeyEvent.VK_DOWN);
-        Thread.sleep(500L);
-        assertTrue(pacManUI.getLosePanel().isShowing());
-        Thread.sleep(500L);
-
-        // Showing game when press retry
-        pacManUI.getLosePanel().getRetryButton().doClick();
-        pressKey(KeyEvent.VK_SPACE);
-        pressKeyN(10,KeyEvent.VK_DOWN);
-        Thread.sleep(500L);
-        assertTrue(pacManUI.getLosePanel().isShowing());
-        Thread.sleep(500L);
-
-        // Showing Home when press home
-        pacManUI.getLosePanel().getHomeButton().doClick();
-        assertTrue(pacManUI.getStartPanel().isShowing());
-        Thread.sleep(500L);
-
     }
 
+    @Test
+    void showStartMenuWhenOpened()  {
+        waitForUserSee();
+        assertTrue(pacManUI.getStartPanel().isShowing());
+    }
+
+    @Test
+    void showGameWhenPressStart(){
+        showStartMenuWhenOpened();
+
+        pacManUI.getStartPanel().getStartButton().doClick();
+        waitForUserSee();
+
+        assertTrue(pacManUI.getGameContainer().isShowing());
+    }
+
+    @Test
+    void startGame(){
+        showGameWhenPressStart();
+        var game = pacManUI.getCurrentGame();
+
+        assertFalse(game.isInProgress());
+        pressKey(VK_SPACE);
+        waitForUserSee(0.5);
+        assertTrue(game.isInProgress());
+    }
+    @Test
+    void pauseGame(){
+        startGame();
+        var game = pacManUI.getCurrentGame();
+
+        assertTrue(game.isInProgress());
+        pressKey(VK_SPACE);
+        waitForUserSee(0.5);
+        assertFalse(game.isInProgress());
+    }
+    @Test
+    void resumeGame(){
+        pauseGame();
+        var game = pacManUI.getCurrentGame();
+
+        assertFalse(game.isInProgress());
+        pressKey(VK_SPACE);
+        waitForUserSee(0.5);
+        assertTrue(game.isInProgress());
+    }
+
+    @Test
+    void showLosePageWhenCollisionWithGhost(){
+        startGame();
+
+        pressKeyN(20,VK_DOWN);
+        waitForUserSee();
+        assertTrue(pacManUI.getLosePanel().isShowing());
+    }
+
+    @Test
+    void showStartMenuWhenClickBackHomeOnLosePage(){
+        showLosePageWhenCollisionWithGhost();
+
+        pacManUI.getLosePanel().getHomeButton().doClick();
+        waitForUserSee();
+        assertTrue(pacManUI.getStartPanel().isShowing());
+    }
+    @Test
+    void showGameWhenClickRetryOnLosePage(){
+        showLosePageWhenCollisionWithGhost();
+
+        pacManUI.getLosePanel().getRetryButton().doClick();
+        waitForUserSee();
+        assertTrue(pacManUI.getGameContainer().isShowing());
+    }
+
+    @Test
+    void showWinPageWhenYouWin(){
+        startGame();
+        pressKeyN(10,VK_LEFT);
+        waitForUserSee();
+
+        assertTrue(pacManUI.getWinPanel().isShowing());
+    }
+    @Test
+    void showStartMenuWhenClickBackHomeOnWinPage() {
+        showWinPageWhenYouWin();
+
+        pacManUI.getWinPanel().getHomeButton().doClick();
+        waitForUserSee();
+        assertTrue(pacManUI.getStartPanel().isShowing());
+    }
+    @Test
+    void showGameWhenClickRetryOnWinPage(){
+        showWinPageWhenYouWin();
+
+        pacManUI.getWinPanel().getRetryButton().doClick();
+        waitForUserSee();
+        assertTrue(pacManUI.getGameContainer().isShowing());
+    }
+    @Test
+    void showNewGameWhenClickNextOnWinPage(){
+        showWinPageWhenYouWin();
+
+        pacManUI.getWinPanel().getNextButton().doClick();
+        waitForUserSee();
+        assertTrue(pacManUI.getGameContainer().isShowing());
+    }
+
+    @Test
+    void showEndGameWhenPassFiveLevel(){
+        startGame();
+
+        for (int i = 0; i < 5; i++) {
+            assertTrue(pacManUI.getGameContainer().isShowing());
+            pressKeyN(10,VK_LEFT);
+            waitForUserSee(0.5);
+            assertTrue(pacManUI.getWinPanel().isShowing());
+            pacManUI.getWinPanel().getNextButton().doClick();
+            waitForUserSee(0.5);
+            pacManUI.getCurrentGame().start();
+        }
+
+        waitForUserSee(1);
+        assertTrue(pacManUI.getEndAllPanel().isShowing());
+    }
+
+    @Test
+    void showStartMenuWhenClickHomeOnEndgame(){
+        showWinPageWhenYouWin();
+
+        pacManUI.getEndAllPanel().getHomeButton().doClick();
+
+        assertTrue(pacManUI.getStartPanel().isShowing());
+    }
 
 
     /**
@@ -142,6 +234,20 @@ public class NewUISmokeTest {
     public static void pressKeyN(int n, int ...keys){
         for (int i = 0; i < n; i++) {
             pressKey(keys);
+        }
+    }
+
+    private void waitForUserSee(){
+        waitForUserSee(1);
+    }
+    private void waitForUserSee(double percent){
+        assert percent >= 0;
+        assert percent <= 1;
+
+        try {
+            Thread.sleep((long) (DELAY_TIME * percent));
+        }catch (InterruptedException e){
+            System.out.println(e);
         }
     }
 
